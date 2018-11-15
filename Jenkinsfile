@@ -1,9 +1,7 @@
 pipeline {
-
-    agent any
+ agent any
     stages{
-
-        stage('Build'){
+    stage('Build'){
             steps {
                 bat 'mvn clean package'
             }
@@ -14,6 +12,11 @@ pipeline {
                 }
             }
         } 
-
+         stage('Deploy to tomcat staging'){
+             steps{
+                 build job: 'Deploy war to tomcat'
+                              }
+         }
     }
+
 }
