@@ -1,37 +1,21 @@
 pipeline {
- agent any
+    agent any
     stages{
-    stage('Build'){
+        stage('Build'){
             steps {
-                bat 'mvn clean package'
+                sh 'mvn clean package'
             }
             post {
-                success{
+                success {
                     echo 'Now Archiving...'
                     archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
-        } 
-         stage('Deploy to tomcat staging'){
-             steps{
-                 build job: 'Deploy war to tomcat'
-                              }
-         }
-         stage ('Deploy to Production'){
-            steps{
-                
-                   build job: 'deploy war to prod'
-            }
-            post {
-                success {
-                    echo 'Code deployed to Production.'
-                }
-
-                failure {
-                    echo ' Deployment failed.'
-                }
+        }
+        stage ('Deploy to Staging'){
+            steps {
+                build job: 'Deploy war to tomcat'
             }
         }
     }
-
 }
